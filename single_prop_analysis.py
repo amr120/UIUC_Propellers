@@ -443,6 +443,7 @@ contour_lines = plt.contour(
     alpha=1.0,
     colors='black',
     linewidths=1,
+    zorder=1,
 )
 
 def fmt_epsilon(level):
