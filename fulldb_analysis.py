@@ -117,7 +117,7 @@ def process_file(path):
     Epsilon = Vfs / Vj
     Chi = Vfs / V1
     Sigma = V1 / Vj
-    Utip = n * (diameter_m / 2)
+    Utip = 2 * np.pi * n * (diameter_m / 2)  # Omega * r_c (2pi: rev/s -> rad/s)
     Phitip = V1 / Utip
     Psitip = 0.5 * (Vj**2 - Vfs**2) / (Utip**2)
     Jaero = Vfs / Utip
@@ -294,8 +294,8 @@ def main():
                 #plt.show()
 
                 # Jaero-Phitip-Chi contour plot
-                Jrange = np.linspace(0.01, 3.3, 100)
-                Phirange = np.linspace(0.01, 3.3, 100)
+                Jrange = np.linspace(0.01, 3.3, 100) / (2 * np.pi)
+                Phirange = np.linspace(0.01, 3.3, 100) / (2 * np.pi)
                 J_mesh, Phi_mesh = np.meshgrid(Jrange, Phirange)
                 Chirange = np.divide(J_mesh, Phi_mesh)
 
@@ -352,8 +352,8 @@ def main():
                 plt.ylabel(r'$\Psi_{\mathrm{tip}}$', fontsize=20)
                 plt.xticks(fontsize=14)
                 plt.yticks(fontsize=14)
-                plt.xlim(0.25, 2.75)
-                plt.ylim(0, 1)
+                plt.xlim(0.25 / (2 * np.pi), 2.75 / (2 * np.pi))
+                plt.ylim(0, 1 / (2 * np.pi) ** 2)
                 plt.grid(True, alpha=0.3)
                 plt.savefig("fan_efficiency_contour_scatter.png", bbox_inches="tight", dpi=300)
                 plt.show()

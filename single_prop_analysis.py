@@ -123,7 +123,7 @@ Epsilon = Vfs / Vj
 Chi = Vfs / V1
 Sigma = V1 / Vj
 print(Sigma)
-Utip = (rpm / 60) * (diameter / 2) 
+Utip = 2 * np.pi * (rpm / 60) * (diameter / 2)  # Omega * r_c (2pi: rev/s -> rad/s) 
 Phitip = V1 / Utip
 Jaero = Vfs / Utip #define aerodynamic advance ratio
 
@@ -189,8 +189,8 @@ except PermissionError:
 
 
 
-Jrange = np.linspace(0.01, 2, 100)
-Phirange = np.linspace(0.01, 2, 100)
+Jrange = np.linspace(0.01, 2, 100) / (2 * np.pi)
+Phirange = np.linspace(0.01, 2, 100) / (2 * np.pi)
 J_mesh, Phi_mesh = np.meshgrid(Jrange, Phirange)
 Chirange = np.divide(J_mesh, Phi_mesh)
 # Requested meshgrids for psi and phi in [0.1, 1.0]
@@ -401,7 +401,7 @@ b = -Vfs
 c = -Thrust / (1.2 * Area * 0.5)
 Vj = (Vfs + np.sqrt(b**2 - 4*a*c)) /(2 * a)
 Vfan = 0.5 * (Vfs + Vj)
-Utip = (rpm / 60) * (diameter / 2)
+Utip = 2 * np.pi * (rpm / 60) * (diameter / 2)  # Omega * r_c (2pi: rev/s -> rad/s)
 print('Utip:', Utip)
 Phi = Vfan / Utip
 print('Phi:', Phi)
@@ -421,13 +421,13 @@ plt.xlabel(r'$\Phi_{\mathrm{tip}} $', fontsize=14)
 plt.ylabel(r'$\Psi_{\mathrm{tip}}$', fontsize=14)
 plt.xticks(fontsize=14)
 plt.yticks(fontsize=14)
-plt.xlim(0.5, 1.6)
-plt.ylim(-0.02, 0.7)
+plt.xlim(0.5 / (2 * np.pi), 1.6 / (2 * np.pi))
+plt.ylim(-0.02 / (2 * np.pi) ** 2, 0.7 / (2 * np.pi) ** 2)
 plt.grid(True, alpha=0.3)
 plt.title(brand+f' Propeller (Diameter: {diameter_in} in, RPM: {rpm})', fontsize=14, fontweight='bold')
 
-psi_range = np.linspace(-0.02, 0.7, 120)
-phi_range = np.linspace(0.001, 1.6, 120)
+psi_range = np.linspace(-0.02, 0.7, 120) / (2 * np.pi) ** 2
+phi_range = np.linspace(0.001, 1.6, 120) / (2 * np.pi)
 phi_mesh, psi_mesh = np.meshgrid(phi_range, psi_range)
 
 epsilon_mesh = 2 / (psi_mesh / (2 * phi_mesh**2) + 1) - 1
@@ -478,7 +478,7 @@ b = -Vfs
 c = -Thrust / (1.2 * Area * 0.5)
 Vj = (Vfs + np.sqrt(b**2 - 4*a*c)) /(2 * a)
 Vfan = 0.5 * (Vfs + Vj)
-Utip = (rpm / 60) * (diameter / 2)
+Utip = 2 * np.pi * (rpm / 60) * (diameter / 2)  # Omega * r_c (2pi: rev/s -> rad/s)
 print('Utip:', Utip)
 Phi = Vfan / Utip
 print('Phi:', Phi)
@@ -514,7 +514,7 @@ b = -Vfs
 c = -Thrust / (1.2 * Area * 0.5)
 Vj = (Vfs + np.sqrt(b**2 - 4*a*c)) /(2 * a)
 Vfan = 0.5 * (Vfs + Vj)
-Utip = (rpm / 60) * (diameter / 2)
+Utip = 2 * np.pi * (rpm / 60) * (diameter / 2)  # Omega * r_c (2pi: rev/s -> rad/s)
 print('Utip:', Utip)
 Phi = Vfan / Utip
 print('Phi:', Phi)
@@ -550,7 +550,7 @@ b = -Vfs
 c = -Thrust / (1.2 * Area * 0.5)
 Vj = (Vfs + np.sqrt(b**2 - 4*a*c)) /(2 * a) 
 Vfan = 0.5 * (Vfs + Vj)
-Utip = (rpm / 60) * (diameter / 2)
+Utip = 2 * np.pi * (rpm / 60) * (diameter / 2)  # Omega * r_c (2pi: rev/s -> rad/s)
 print('Utip:', Utip)
 Phi = Vfan / Utip
 print('Phi:', Phi)
@@ -586,7 +586,7 @@ b = -Vfs
 c = -Thrust / (1.2 * Area * 0.5)
 Vj = (Vfs + np.sqrt(b**2 - 4*a*c)) /(2 * a)
 Vfan = 0.5 * (Vfs + Vj)
-Utip = (rpm / 60) * (diameter / 2)
+Utip = 2 * np.pi * (rpm / 60) * (diameter / 2)  # Omega * r_c (2pi: rev/s -> rad/s)
 print('Utip:', Utip)
 Phi = Vfan / Utip
 print('Phi:', Phi)
@@ -622,7 +622,7 @@ b = -Vfs
 c = -Thrust / (1.2 * Area * 0.5)
 Vj = (Vfs + np.sqrt(b**2 - 4*a*c)) /(2 * a)
 Vfan = 0.5 * (Vfs + Vj)
-Utip = (rpm / 60) * (diameter / 2)
+Utip = 2 * np.pi * (rpm / 60) * (diameter / 2)  # Omega * r_c (2pi: rev/s -> rad/s)
 print('Utip:', Utip)
 Phi = Vfan / Utip
 print('Phi:', Phi)
@@ -668,7 +668,7 @@ print('Vfan_static:', Vfan_static)
 
 mdot = 1.2*Area*Vfan_static
 
-Utip_static = (RPM / 60) * (diameter / 2)
+Utip_static = 2 * np.pi * (RPM / 60) * (diameter / 2)  # Omega * r_c
 print('Utip_static:', Utip_static)
 
 Phi_static = Vfan_static / Utip_static
@@ -685,20 +685,25 @@ plt.scatter(Phi_static[idx], Psi_static[idx], marker='s', c=FanEfficiency_static
 
 
 # Deterministic label positions (points lie exactly on each epsilon contour,
-# chosen clear of the operating-point annotations)
-_label_pos = [(0.55, 0.605), (0.62, 0.414), (0.85, 0.482), (1.05, 0.389), (1.05, 0.116), (1.00, 0.0)]
+# chosen clear of the operating-point annotations; rescaled with the 2pi fix)
+_label_pos = [(p[0] / (2 * np.pi), p[1] / (2 * np.pi) ** 2) for p in
+              [(0.55, 0.605), (0.62, 0.414), (0.85, 0.482), (1.05, 0.389), (1.05, 0.116), (1.00, 0.0)]]
 plt.clabel(contour_lines, inline=True, manual=_label_pos, fontsize=14, fmt=fmt_epsilon)
 
-# Operating-point annotations (thesis Prop_Characteristic2)
-i_to = int(np.argmin(np.abs(Phi - 1.12)))
-i_cr = int(np.argmin(np.abs(Phi - 1.29)))
+# Operating-point annotations (thesis Prop_Characteristic2).
+# Anchors are the same physical points as before the 2pi tip-speed fix.
+i_to = int(np.argmin(np.abs(Phi - 1.12 / (2 * np.pi))))
+i_cr = int(np.argmin(np.abs(Phi - 1.29 / (2 * np.pi))))
 _arrow = dict(arrowstyle='-|>', color='black', lw=2.5)
 _labelbox = dict(boxstyle='round,pad=0.2', facecolor='white', edgecolor='none')
-plt.annotate('Take-off', xy=(Phi[i_to], Psi[i_to] + 0.015), xytext=(Phi[i_to], Psi[i_to] + 0.10),
+_dy = 0.015 / (2 * np.pi) ** 2
+_dY = 0.10 / (2 * np.pi) ** 2
+plt.annotate('Take-off', xy=(Phi[i_to], Psi[i_to] + _dy), xytext=(Phi[i_to], Psi[i_to] + _dY),
              arrowprops=_arrow, fontsize=16, ha='center', bbox=_labelbox, zorder=12)
-plt.annotate('Cruise', xy=(Phi[i_cr], Psi[i_cr] + 0.015), xytext=(Phi[i_cr], Psi[i_cr] + 0.10),
+plt.annotate('Cruise', xy=(Phi[i_cr], Psi[i_cr] + _dy), xytext=(Phi[i_cr], Psi[i_cr] + _dY),
              arrowprops=_arrow, fontsize=16, ha='center', bbox=_labelbox, zorder=12)
-plt.annotate('Static', xy=(Phi_static[idx] + 0.025, Psi_static[idx]), xytext=(Phi_static[idx] + 0.15, Psi_static[idx]),
+plt.annotate('Static', xy=(Phi_static[idx] + 0.025 / (2 * np.pi), Psi_static[idx]),
+             xytext=(Phi_static[idx] + 0.15 / (2 * np.pi), Psi_static[idx]),
              arrowprops=_arrow, fontsize=16, va='center', ha='left', bbox=_labelbox, zorder=12)
 
 plt.savefig("single_fan_efficiency_contour_scatter.png", bbox_inches="tight", dpi=300)
