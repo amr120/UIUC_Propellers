@@ -693,12 +693,13 @@ plt.clabel(contour_lines, inline=True, manual=_label_pos, fontsize=14, fmt=fmt_e
 i_to = int(np.argmin(np.abs(Phi - 1.12)))
 i_cr = int(np.argmin(np.abs(Phi - 1.29)))
 _arrow = dict(arrowstyle='-|>', color='black', lw=2.5)
+_labelbox = dict(boxstyle='round,pad=0.2', facecolor='white', edgecolor='none')
 plt.annotate('Take-off', xy=(Phi[i_to], Psi[i_to] + 0.015), xytext=(Phi[i_to], Psi[i_to] + 0.10),
-             arrowprops=_arrow, fontsize=16, ha='center')
+             arrowprops=_arrow, fontsize=16, ha='center', bbox=_labelbox, zorder=12)
 plt.annotate('Cruise', xy=(Phi[i_cr], Psi[i_cr] + 0.015), xytext=(Phi[i_cr], Psi[i_cr] + 0.10),
-             arrowprops=_arrow, fontsize=16, ha='center')
+             arrowprops=_arrow, fontsize=16, ha='center', bbox=_labelbox, zorder=12)
 plt.annotate('Static', xy=(Phi_static[idx] + 0.025, Psi_static[idx]), xytext=(Phi_static[idx] + 0.15, Psi_static[idx]),
-             arrowprops=_arrow, fontsize=16, va='center', ha='left')
+             arrowprops=_arrow, fontsize=16, va='center', ha='left', bbox=_labelbox, zorder=12)
 
 plt.savefig("single_fan_efficiency_contour_scatter.png", bbox_inches="tight", dpi=300)
 plt.savefig("Prop_Characteristic2.pdf", bbox_inches="tight")
