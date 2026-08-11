@@ -700,11 +700,12 @@ plt.annotate('Static', xy=(Phi_static[idx] + 0.025, Psi_static[idx]), xytext=(Ph
              arrowprops=_arrow, fontsize=16, va='center', ha='left')
 
 plt.savefig("single_fan_efficiency_contour_scatter.png", bbox_inches="tight", dpi=300)
-plt.savefig("Prop_Characteristic2.png", bbox_inches="tight", dpi=300)
+plt.savefig("Prop_Characteristic2.pdf", bbox_inches="tight")
+plt.savefig("Prop_Characteristic2.svg", bbox_inches="tight")
 _thesis_figs = os.path.join(_HERE, "..", "Reaves-Thesis", "4. CURTIS and Throughflow", "Figs")
 if os.path.isdir(_thesis_figs):
-    plt.savefig(os.path.join(_thesis_figs, "Prop_Characteristic2.png"), bbox_inches="tight", dpi=300)
-    print("exported Prop_Characteristic2.png to thesis Figs")
+    plt.savefig(os.path.join(_thesis_figs, "Prop_Characteristic2.pdf"), bbox_inches="tight")
+    print("exported Prop_Characteristic2.pdf to thesis Figs")
 
 
 
