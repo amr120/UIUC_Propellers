@@ -136,11 +136,11 @@ EPS = CHI*SIGMA
 plt.figure(figsize=(6.0531*2, 3.74110012361*2))
 contour = plt.contourf(SIGMA, CHI, EPS, levels=np.linspace(0, 1, 256), cmap='viridis', antialiased=False)
 
-plt.ylabel(r"$\chi = \frac{V_{freestream}}{V_{fan}}$", fontsize=14)
-plt.xlabel(r"$\sigma = \frac{V_{fan}}{V_{jet}}$", fontsize=14)
+plt.ylabel(r"$\chi = \frac{V_{fs}}{V_1}$", fontsize=14)
+plt.xlabel(r"$\sigma = \frac{V_1}{V_j}$", fontsize=14)
 #plt.title(r"Contour of $\epsilon = \chi \cdot \sigma$")
-cbar = plt.colorbar(contour, label=r"$\epsilon = \frac{V_{freestream}}{V_{jet}}$")
-cbar.set_label(r"$\epsilon = \frac{V_{freestream}}{V_{jet}}$", fontsize=14)
+cbar = plt.colorbar(contour, label=r"$\varepsilon = \frac{V_{fs}}{V_j}$")
+cbar.set_label(r"$\varepsilon = \frac{V_{fs}}{V_j}$", fontsize=14)
 cbar.set_ticks([0, 0.25, 0.5, 0.75, 1.0])
 cbar.ax.tick_params(labelsize=14)
 mask = EPS > 1
@@ -162,7 +162,7 @@ plt.plot(sigma_line, chi_line, '--', linewidth=3, color='white',  label=r'$\chi 
 plt.contour(SIGMA, CHI,EPS, levels=[1.0], colors='black', linewidths=3)
 
 
-plt.scatter(Sigma, Chi, marker='x', color='red', s=100, zorder=10, label='Experiment')
+plt.scatter(Sigma, Chi, marker='x', color='red', s=100, zorder=10, label='UIUC database')
 for i in range(len(Chi)):
     plt.text(Sigma[i], Chi[i], str(i+1), fontsize=14, ha='center', va='bottom')
 #plt.xlabel(r'$\sigma = V_1/V_j$', fontsize=12)
@@ -362,7 +362,7 @@ legend_theory = ax2.legend(
 legend_experiment = ax2.legend(
     experiment_handles,
     experiment_labels,
-    title='Experiment',
+    title='UIUC database',
     fontsize=12,
     title_fontsize=13,
     loc='lower left',

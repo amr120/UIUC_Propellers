@@ -247,10 +247,10 @@ def main():
                 fig2 = plt.figure(figsize=(6.0531*2, 3.74110012361*2))
                 contour = plt.contourf(SIGMA, CHI, EPS, levels=np.linspace(0, 1, 256), cmap='viridis', antialiased=False)
 
-                plt.ylabel(r"$\chi = \frac{V_{freestream}}{V_{fan}}$", fontsize=14)
-                plt.xlabel(r"$\sigma = \frac{V_{fan}}{V_{jet}}$", fontsize=14)
-                cbar = plt.colorbar(contour, label=r"$\epsilon = \frac{V_{freestream}}{V_{jet}}$")
-                cbar.set_label(r"$\epsilon = \frac{V_{freestream}}{V_{jet}}$", fontsize=14)
+                plt.ylabel(r"$\chi = \frac{V_{fs}}{V_1}$", fontsize=14)
+                plt.xlabel(r"$\sigma = \frac{V_1}{V_j}$", fontsize=14)
+                cbar = plt.colorbar(contour, label=r"$\varepsilon = \frac{V_{fs}}{V_j}$")
+                cbar.set_label(r"$\varepsilon = \frac{V_{fs}}{V_j}$", fontsize=14)
                 cbar.set_ticks([0, 0.25, 0.5, 0.75, 1.0])
                 cbar.ax.tick_params(labelsize=14)
                 mask = EPS > 1
@@ -277,7 +277,7 @@ def main():
 
                 #plt.title("UIUC Propeller Database", fontsize=14, fontweight='bold')
                 handles2 = [
-                    Line2D([0], [0], marker='x', color='red',  linestyle='', markersize=10, label='Experiment'),
+                    Line2D([0], [0], marker='x', color='red',  linestyle='', markersize=10, label='UIUC database'),
                     Line2D([0], [0], color='white', linestyle='--', linewidth=3, label=r'$\chi = 2 - 1/\sigma$')
                 ]
                 plt.legend(handles=handles2, fontsize=14, loc='lower left')
@@ -317,7 +317,7 @@ def main():
                 ax3.set_ylabel(r'$\Phi_{\mathrm{tip}} = V_1/U_{\mathrm{tip}}$', fontsize=12)
                 ax3.set_title("UIUC Propeller Database Volumes 1-4 - Jaero-Phitip-Chi", fontsize=12, fontweight='bold')
                 #ax3.grid(True, alpha=0.3)
-                handles3 = [Line2D([0], [0], marker='x', color='red', markerfacecolor='red', markersize=10, label='Experiment')]
+                handles3 = [Line2D([0], [0], marker='x', color='red', markerfacecolor='red', markersize=10, label='UIUC database')]
                 ax3.legend(handles=handles3, fontsize=12, loc='upper left')
                 #ax3.grid(True, alpha=0.3)
                 #fig3.savefig("jaero_phitip_chi_contour.pdf", bbox_inches="tight")
