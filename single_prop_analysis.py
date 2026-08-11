@@ -7,7 +7,9 @@ from scipy.optimize import fsolve
 #sns.set_style("whitegrid")
 #sns.set_palette("colorblind")
 
-path = r"C:\Users\amr200\OneDrive - University of Cambridge\Desktop\UIUC PROPS\ance_8.5x6_2849cm_4000.txt"
+_HERE = os.path.dirname(os.path.abspath(__file__))
+_V1DATA = os.path.join(_HERE, "UIUC-propDB", "UIUC-propDB", "volume-1", "data")
+path = os.path.join(_HERE, "ance_8.5x6_2849cm_4000.txt")
 file_name = os.path.basename(path)
 stem, _ = os.path.splitext(file_name)
 parts = stem.split("_")
@@ -487,7 +489,7 @@ plt.plot(Phi, Psi, linewidth=2, alpha=0.8, zorder=5, label=f'RPM: {rpm}')
 plt.scatter(Phi, Psi, c=eps, s=45, cmap='viridis', vmin=0, vmax=1, edgecolors='black', linewidths=0.5, zorder=5)
 
 #5986
-path = r"C:\Users\amr200\OneDrive - University of Cambridge\Desktop\UIUC PROPS\UIUC-propDB\UIUC-propDB\volume-1\data\ance_8.5x6_2851cm_5986.txt"
+path = os.path.join(_V1DATA, "ance_8.5x6_2851cm_5986.txt")
 file_name = os.path.basename(path)
 stem, _ = os.path.splitext(file_name)
 parts = stem.split("_")
@@ -523,7 +525,7 @@ plt.plot(Phi, Psi, linewidth=2, alpha=0.8, zorder=5, label=f'RPM: {rpm}')
 plt.scatter(Phi, Psi, c=eps, s=45, cmap='viridis', vmin=0, vmax=1, edgecolors='black', linewidths=0.5, zorder=5)
 
 #6009
-path = r"C:\Users\amr200\OneDrive - University of Cambridge\Desktop\UIUC PROPS\UIUC-propDB\UIUC-propDB\volume-1\data\ance_8.5x6_2852cm_6009.txt"
+path = os.path.join(_V1DATA, "ance_8.5x6_2852cm_6009.txt")
 file_name = os.path.basename(path)
 stem, _ = os.path.splitext(file_name)
 parts = stem.split("_")
@@ -559,7 +561,7 @@ plt.plot(Phi, Psi, linewidth=2, alpha=0.8, zorder=5, label=f'RPM: {rpm}')
 plt.scatter(Phi, Psi, c=eps, s=45, cmap='viridis', vmin=0, vmax=1, edgecolors='black', linewidths=0.5, zorder=5)
 
 #6928
-path = r"C:\Users\amr200\OneDrive - University of Cambridge\Desktop\UIUC PROPS\UIUC-propDB\UIUC-propDB\volume-1\data\ance_8.5x6_2853cm_6928.txt"
+path = os.path.join(_V1DATA, "ance_8.5x6_2853cm_6928.txt")
 file_name = os.path.basename(path)
 stem, _ = os.path.splitext(file_name)
 parts = stem.split("_")
@@ -595,7 +597,7 @@ plt.plot(Phi, Psi, linewidth=2, alpha=0.8, zorder=5, label=f'RPM: {rpm}')
 plt.scatter(Phi, Psi, c=eps, s=45, cmap='viridis', vmin=0, vmax=1, edgecolors='black', linewidths=0.5, zorder=5)
 
 #6914
-path = r"C:\Users\amr200\OneDrive - University of Cambridge\Desktop\UIUC PROPS\UIUC-propDB\UIUC-propDB\volume-1\data\ance_8.5x6_2854cm_6914.txt"
+path = os.path.join(_V1DATA, "ance_8.5x6_2854cm_6914.txt")
 file_name = os.path.basename(path)
 stem, _ = os.path.splitext(file_name)
 parts = stem.split("_")
@@ -633,7 +635,7 @@ plt.scatter(Phi, Psi, c=eps, s=45, cmap='viridis', vmin=0, vmax=1, edgecolors='b
 
 
 #Load in static case for the same propeller
-path = r"C:\Users\amr200\OneDrive - University of Cambridge\Desktop\UIUC PROPS\UIUC-propDB\UIUC-propDB\volume-1\data\ance_8.5x6_static_2848cm.txt"
+path = os.path.join(_V1DATA, "ance_8.5x6_static_2848cm.txt")
 file_name = os.path.basename(path)
 stem, _ = os.path.splitext(file_name)
 parts = stem.split("_")
@@ -681,7 +683,7 @@ print('Fan Efficiency:', FanEfficiency_static[idx])
 plt.scatter(Phi_static[idx], Psi_static[idx], marker='s', c=FanEfficiency_static[idx], s=100, zorder=10, edgecolors='black', linewidths=1.5, vmin=np.min(FanEfficiency), vmax=np.max(FanEfficiency), cmap='viridis')
 
 
-plt.clabel(contour_lines, inline=True, manual=True, fontsize=14, fmt=fmt_epsilon)
+plt.clabel(contour_lines, inline=True, manual=(plt.get_backend().lower() != "agg"), fontsize=14, fmt=fmt_epsilon)
 
 plt.savefig("single_fan_efficiency_contour_scatter.png", bbox_inches="tight", dpi=300)
 

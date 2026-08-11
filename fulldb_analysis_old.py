@@ -8,7 +8,7 @@ import seaborn as sns
 sns.set_style("whitegrid")
 sns.set_palette("colorblind")
 
-DATA_DIR = r"c:\Users\amr200\OneDrive - University of Cambridge\Desktop\UIUC PROPS\UIUC-propDB\UIUC-propDB\volume-3\data"
+DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "UIUC-propDB", "UIUC-propDB", "volume-3", "data")
 RHO = 1.2
 PLOT = True
 

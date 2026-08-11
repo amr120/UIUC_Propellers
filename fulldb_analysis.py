@@ -8,12 +8,8 @@ from scipy.optimize import fsolve
 #sns.set_style("whitegrid")
 #sns.set_palette("colorblind")
 
-DATA_DIRS = [
-    r"c:\Users\amr200\OneDrive - University of Cambridge\Desktop\UIUC PROPS\UIUC-propDB\UIUC-propDB\volume-1\data",
-    r"c:\Users\amr200\OneDrive - University of Cambridge\Desktop\UIUC PROPS\UIUC-propDB\UIUC-propDB\volume-2\data",
-    r"c:\Users\amr200\OneDrive - University of Cambridge\Desktop\UIUC PROPS\UIUC-propDB\UIUC-propDB\volume-3\data",
-    r"c:\Users\amr200\OneDrive - University of Cambridge\Desktop\UIUC PROPS\UIUC-propDB\UIUC-propDB\volume-4\data",
-]
+_DB_ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "UIUC-propDB", "UIUC-propDB")
+DATA_DIRS = [os.path.join(_DB_ROOT, f"volume-{i}", "data") for i in range(1, 5)]
 RHO = 1.2
 PLOT = True
 
