@@ -1,0 +1,11 @@
+# Redundant archives of the already-extracted database (re-downloadable from UIUC)
+UIUC-propDB.zip
+UIUC-database.zip
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Windows/OneDrive noise
+Thumbs.db
+desktop.ini
