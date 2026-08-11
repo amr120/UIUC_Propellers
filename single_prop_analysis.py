@@ -38,7 +38,7 @@ for i in range(len(J)):
     ax.text(J[i], CP[i], str(i+1), fontsize=14, ha='center', va='bottom')
     
 
-ax.set_xlabel(r'Advance Ratio ($J = \frac{V_{\mathrm{fs}}}{\Omega D}$)', fontsize=14)
+ax.set_xlabel(r'Advance Ratio ($J = \frac{V_{\mathrm{fs}}}{n_s D}$)', fontsize=14)
 ax.set_ylabel(r'[-]', fontsize=14)
 ax.set_title(brand+f' Propeller  (Diameter: {diameter_in} in, RPM: {rpm})', fontsize=14, fontweight='bold')
 
@@ -239,7 +239,7 @@ for i in range(len(J)):
     #ax3.text(J[i], V1[i] / (0.5*(Vfs[i] + Vj[i])), str(i+1), fontsize=8, ha='center', va='bottom')
     
 
-ax3.set_xlabel(r'Advance Ratio ($J = \frac{V_{\mathrm{fs}}}{\Omega D}$)', fontsize=12)
+ax3.set_xlabel(r'Advance Ratio ($J = \frac{V_{\mathrm{fs}}}{n_s D}$)', fontsize=12)
 ax3.set_ylabel(r'[-]', fontsize=12)
 ax3.set_title(brand+f' Propeller (Diameter: {diameter_in} in, RPM: {rpm})', fontsize=12, fontweight='bold')
 
