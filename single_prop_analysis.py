@@ -14,7 +14,7 @@ file_name = os.path.basename(path)
 stem, _ = os.path.splitext(file_name)
 parts = stem.split("_")
 
-brand = parts[0]
+brand = parts[0].upper()
 diameter_in = float(parts[1].split("x")[0])
 diameter = diameter_in * 0.0254 # convert inches to meters
 rpm = int(parts[3])
@@ -640,7 +640,7 @@ file_name = os.path.basename(path)
 stem, _ = os.path.splitext(file_name)
 parts = stem.split("_")
 
-brand = parts[0]
+brand = parts[0].upper()
 diameter_in = float(parts[1].split("x")[0])
 diameter = diameter_in * 0.0254 # convert inches to meters
 #rpm = int(parts[3])
@@ -683,9 +683,28 @@ print('Fan Efficiency:', FanEfficiency_static[idx])
 plt.scatter(Phi_static[idx], Psi_static[idx], marker='s', c=FanEfficiency_static[idx], s=100, zorder=10, edgecolors='black', linewidths=1.5, vmin=np.min(FanEfficiency), vmax=np.max(FanEfficiency), cmap='viridis')
 
 
-plt.clabel(contour_lines, inline=True, manual=(plt.get_backend().lower() != "agg"), fontsize=14, fmt=fmt_epsilon)
+# Deterministic label positions (points lie exactly on each epsilon contour,
+# chosen clear of the operating-point annotations)
+_label_pos = [(0.55, 0.605), (0.62, 0.414), (0.85, 0.482), (1.05, 0.389), (1.05, 0.116), (1.00, 0.0)]
+plt.clabel(contour_lines, inline=True, manual=_label_pos, fontsize=14, fmt=fmt_epsilon)
+
+# Operating-point annotations (thesis Prop_Characteristic2)
+i_to = int(np.argmin(np.abs(Phi - 1.12)))
+i_cr = int(np.argmin(np.abs(Phi - 1.29)))
+_arrow = dict(arrowstyle='-|>', color='black', lw=2.5)
+plt.annotate('Take-off', xy=(Phi[i_to], Psi[i_to] + 0.015), xytext=(Phi[i_to], Psi[i_to] + 0.10),
+             arrowprops=_arrow, fontsize=16, ha='center')
+plt.annotate('Cruise', xy=(Phi[i_cr], Psi[i_cr] + 0.015), xytext=(Phi[i_cr], Psi[i_cr] + 0.10),
+             arrowprops=_arrow, fontsize=16, ha='center')
+plt.annotate('Static', xy=(Phi_static[idx] + 0.025, Psi_static[idx]), xytext=(Phi_static[idx] + 0.15, Psi_static[idx]),
+             arrowprops=_arrow, fontsize=16, va='center', ha='left')
 
 plt.savefig("single_fan_efficiency_contour_scatter.png", bbox_inches="tight", dpi=300)
+plt.savefig("Prop_Characteristic2.png", bbox_inches="tight", dpi=300)
+_thesis_figs = os.path.join(_HERE, "..", "Reaves-Thesis", "4. CURTIS and Throughflow", "Figs")
+if os.path.isdir(_thesis_figs):
+    plt.savefig(os.path.join(_thesis_figs, "Prop_Characteristic2.png"), bbox_inches="tight", dpi=300)
+    print("exported Prop_Characteristic2.png to thesis Figs")
 
 
 
