@@ -1,3 +1,22 @@
+"""Whole-database reduction of the UIUC propeller data into the framework.
+
+Reads all four volumes of the UIUC propeller database and reduces every
+measured operating point into the non-dimensional variables of Chapter 3
+(eps, chi, sigma, phi_tip, psi_tip, and the fan efficiency), then draws the
+population-level figures.
+
+Thesis figures produced (all Chapter 3):
+  chi_sigma_eps_contour_fullDB.png   Fig. 3.8  (fig:chi_sigma_eps_contour)
+  fan_efficiency_contour_scatter.png Fig. 3.9  (fig:fullDBSmithChart)
+  propeller_plots.pdf                Fig. 3.10 (fig:fullDBfanefficiencyeps)
+
+Also written but not used by the thesis: fan_efficiency_contour.png, and the
+_backup.svg copies alongside each figure.
+
+The single-propeller counterpart, which draws one machine's working line on
+these same axes, is single_prop_analysis.py.
+"""
+
 import os
 import re
 from matplotlib.lines import Line2D
@@ -8,7 +27,27 @@ from scipy.optimize import fsolve
 #sns.set_style("whitegrid")
 #sns.set_palette("colorblind")
 
-_DB_ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "UIUC-propDB", "UIUC-propDB")
+
+def _db_root():
+    """Locate the extracted database, tolerating either directory layout.
+
+    The UIUC archive unpacks to a doubled UIUC-propDB/UIUC-propDB/ path; that
+    redundant level may be flattened. Accept whichever is present.
+    """
+    here = os.path.dirname(os.path.abspath(__file__))
+    nested = os.path.join(here, "UIUC-propDB", "UIUC-propDB")
+    flat = os.path.join(here, "UIUC-propDB")
+    if os.path.isdir(os.path.join(nested, "volume-1", "data")):
+        return nested
+    if os.path.isdir(os.path.join(flat, "volume-1", "data")):
+        return flat
+    raise FileNotFoundError(
+        "UIUC database not found; expected volume-1/data under "
+        f"{nested} or {flat}. Extract UIUC-propDB.zip alongside this script."
+    )
+
+
+_DB_ROOT = _db_root()
 DATA_DIRS = [os.path.join(_DB_ROOT, f"volume-{i}", "data") for i in range(1, 5)]
 RHO = 1.2
 PLOT = True

@@ -1,3 +1,27 @@
+"""Single-propeller worked example of the framework, and the Ch. 4 working line.
+
+Takes one machine from the UIUC database, the Aeronaut Carbon Electric
+8.5x6 (ANCE), across its five measured shaft speeds plus the static case, and
+carries it through the reduction of Chapter 3: the classical characteristic in
+J, the same data re-expressed in eps, and the machine's working line drawn on
+the framework's contour maps.
+
+Thesis figures produced:
+  propeller_performance_original.pdf  Fig. 3.5 (fig:original_prop_performance)
+  single_propeller_performance.pdf    Fig. 3.6 (fig:single_propeller_performance)
+  jaero_phitip_contour.pdf            Fig. 3.7 (fig:jaero_phitip_contour)
+  Prop_Characteristic2.pdf            Fig. 4.3 (fig:Prop_Characteristic)
+                                      -- note this one is Chapter 4, and is
+                                      exported straight into that chapter's
+                                      Figs directory at the end of the script.
+
+Also written but not used by the thesis: chi_sigma_eps_contour.png,
+eps_performance_original.pdf, single_fan_efficiency_contour_scatter.png, and
+the _backup.svg copies alongside each figure.
+
+The whole-database counterpart is fulldb_analysis.py.
+"""
+
 import os
 import numpy as np
 import matplotlib.pyplot as plt
@@ -8,7 +32,27 @@ from scipy.optimize import fsolve
 #sns.set_palette("colorblind")
 
 _HERE = os.path.dirname(os.path.abspath(__file__))
-_V1DATA = os.path.join(_HERE, "UIUC-propDB", "UIUC-propDB", "volume-1", "data")
+
+
+def _db_root():
+    """Locate the extracted database, tolerating either directory layout.
+
+    The UIUC archive unpacks to a doubled UIUC-propDB/UIUC-propDB/ path; that
+    redundant level may be flattened. Accept whichever is present.
+    """
+    nested = os.path.join(_HERE, "UIUC-propDB", "UIUC-propDB")
+    flat = os.path.join(_HERE, "UIUC-propDB")
+    if os.path.isdir(os.path.join(nested, "volume-1", "data")):
+        return nested
+    if os.path.isdir(os.path.join(flat, "volume-1", "data")):
+        return flat
+    raise FileNotFoundError(
+        "UIUC database not found; expected volume-1/data under "
+        f"{nested} or {flat}. Extract UIUC-propDB.zip alongside this script."
+    )
+
+
+_V1DATA = os.path.join(_db_root(), "volume-1", "data")
 path = os.path.join(_HERE, "ance_8.5x6_2849cm_4000.txt")
 file_name = os.path.basename(path)
 stem, _ = os.path.splitext(file_name)
