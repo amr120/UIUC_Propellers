@@ -92,8 +92,12 @@ axr.set_ylabel(r"$\eta_{prop}$")
 ax.set_xlim(0.1, 0.65)
 ax.set_ylim(-0.012, 0.09)
 axr.set_ylim(0, 1.0)
-ax.legend(handles=[h_ct, h_cp, h_eta, h_id], loc="lower center",
-          bbox_to_anchor=(0.42, 0.02), frameon=False, fontsize=11)
+# opaque boxed legend: keep it in the data-free lower-left corner so the
+# white background never occludes a curve
+leg = ax.legend(handles=[h_ct, h_cp, h_eta, h_id], loc="lower left",
+                bbox_to_anchor=(0.02, 0.03), fontsize=10.5, frameon=True,
+                facecolor="white", edgecolor="black", framealpha=1.0)
+leg.get_frame().set_linewidth(0.8)
 
 fig.tight_layout()
 fig.savefig(os.path.join(_HERE, "prop-characteristic-uiuc.pdf"), bbox_inches="tight")
