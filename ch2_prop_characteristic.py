@@ -74,15 +74,17 @@ eta_ideal = 2.0 / (1.0 + np.sqrt(1.0 + Tc))
 fig, ax = plt.subplots(figsize=(6.4, 4.6), facecolor="w")
 axr = ax.twinx()
 
-h_ct, = ax.plot(J, CT, marker="o", ms=5, lw=1.8, color="tab:blue",
+# black and white throughout: the four curves separate by marker and line
+# style alone (filled circles, open squares, filled triangles, dashed line)
+h_ct, = ax.plot(J, CT, marker="o", ms=5, lw=1.6, color="k",
                 label=r"$C_T$")
-h_cp, = ax.plot(J, CP, marker="s", ms=5, lw=1.8, color="tab:orange",
+h_cp, = ax.plot(J, CP, marker="s", ms=5, lw=1.6, color="k", mfc="white",
                 label=r"$C_P$")
 ax.axhline(0.0, color="0.6", lw=0.8, zorder=1)
 h_id, = axr.plot(J[thrusting], eta_ideal, ls="--", lw=1.8, color="k",
                  label=r"$\eta_{prop}$, zero drag (ideal)")
-h_eta, = axr.plot(J[thrusting], eta[thrusting], marker="^", ms=6, lw=1.8,
-                  color="tab:green", label=r"$\eta_{prop}$, measured")
+h_eta, = axr.plot(J[thrusting], eta[thrusting], marker="^", ms=6, lw=1.6,
+                  color="k", label=r"$\eta_{prop}$, measured")
 
 ax.set_xlabel(r"Advance ratio  $J$")
 ax.set_ylabel(r"$C_T$,  $C_P$")
