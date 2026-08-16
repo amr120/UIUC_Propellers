@@ -28,6 +28,26 @@ from scipy.optimize import fsolve
 #sns.set_palette("colorblind")
 
 
+_HERE = os.path.dirname(os.path.abspath(__file__))
+_THESIS_FIGS = os.path.join(_HERE, "..", "Reaves-Thesis", "3. 1D Models", "Figs")
+
+
+def _save(fig, name):
+    """Write a figure beside the script and into the thesis Figs directory.
+
+    Vector PDF throughout: heavy layers are rasterized individually at the
+    call site, so the field art stays compact while axes, labels and legends
+    remain real text.
+    """
+    fig.savefig(os.path.join(_HERE, name), bbox_inches="tight", dpi=300)
+    if os.path.isdir(_THESIS_FIGS):
+        fig.savefig(os.path.join(_THESIS_FIGS, name), bbox_inches="tight",
+                    dpi=300)
+        print(f"exported {name} to thesis Figs")
+    else:
+        print(f"saved {name}")
+
+
 def _db_root():
     """Locate the extracted database, tolerating either directory layout.
 
@@ -229,6 +249,9 @@ def main():
 
     if PLOT and results:
         import matplotlib.pyplot as plt
+        # serif body text and Computer Modern math, matching the thesis; the
+        # per-call fontsize arguments below are left as they are
+        plt.rcParams.update({"font.family": "serif", "mathtext.fontset": "cm"})
 
         fig, ax = plt.subplots(figsize=(6.0531*2, 3.74110012361*2))
 
@@ -285,6 +308,9 @@ def main():
 
                 fig2 = plt.figure(figsize=(6.0531*2, 3.74110012361*2))
                 contour = plt.contourf(SIGMA, CHI, EPS, levels=np.linspace(0, 1, 256), cmap='viridis', antialiased=False)
+                # 256 filled levels are ruinous as vector art; rasterize the
+                # field so the PDF stays small while text and lines stay vector
+                contour.set_rasterized(True)
 
                 plt.ylabel(r"$\chi = \frac{V_{fs}}{V_1}$", fontsize=14)
                 plt.xlabel(r"$\sigma = \frac{V_1}{V_j}$", fontsize=14)
@@ -325,10 +351,9 @@ def main():
                 plt.tight_layout()
               
                 try:
-                    fig2.savefig("chi_sigma_eps_contour_fullDB.png", bbox_inches="tight", dpi=300)
-                    print("Saved chi_sigma_eps_contour_fullDB.png successfully")
+                    _save(fig2, "chi_sigma_eps_contour_fullDB.pdf")
                 except PermissionError:
-                    print("Warning: Could not save PNG (file may be open). Saving as SVG instead.")
+                    print("Warning: Could not save PDF (file may be open). Saving as SVG instead.")
                     fig2.savefig("chi_sigma_eps_contour_backup.svg", bbox_inches="tight")
                 #plt.show()
 
@@ -382,7 +407,8 @@ def main():
                 for result in results:
                 #    plt.scatter(result["Phitip"], result["Psitip"], c=result["FanEfficiency"], marker='s', s=10, cmap='viridis', vmin=0, vmax=1,alpha=0.5, zorder=10)
                     plt.plot(result["Phitip"], result["Psitip"], linewidth=2, alpha=0.2, zorder=5, color='black')
-                plt.scatter(Phitip_valid, Psitip_valid, c=faneta_valid, s=20, cmap='viridis', vmin=0, vmax=1, edgecolors='black', linewidths=0.5, zorder=5)
+                _sc = plt.scatter(Phitip_valid, Psitip_valid, c=faneta_valid, s=20, cmap='viridis', vmin=0, vmax=1, edgecolors='black', linewidths=0.5, zorder=5)
+                _sc.set_rasterized(True)   # thousands of markers
                 #plt.plot(Phitip_valid, Psitip_valid, linewidth=2, alpha=0.2, zorder=5, color='black')
                 cbar = plt.colorbar(label=r'$\eta_{\mathrm{fan}}$')
                 cbar.set_label(r'$\eta_{\mathrm{fan}}$', fontsize=20)
@@ -394,7 +420,7 @@ def main():
                 plt.xlim(0.25 / (2 * np.pi), 2.75 / (2 * np.pi))
                 plt.ylim(0, 1 / (2 * np.pi) ** 2)
                 plt.grid(True, alpha=0.3)
-                plt.savefig("fan_efficiency_contour_scatter.png", bbox_inches="tight", dpi=300)
+                _save(plt.gcf(), "fan_efficiency_contour_scatter.pdf")
                 plt.show()
 
                 
