@@ -251,7 +251,12 @@ def main():
         import matplotlib.pyplot as plt
         # serif body text and Computer Modern math, matching the thesis; the
         # per-call fontsize arguments below are left as they are
-        plt.rcParams.update({"font.family": "serif", "mathtext.fontset": "cm"})
+        plt.rcParams.update({"font.family": "serif",
+    # Name the face: bare "serif" resolves to DejaVu Serif, not the body font.
+    "font.serif": ["Nimbus Roman", "Nimbus Roman No9 L", "Times New Roman",
+                   "Liberation Serif", "DejaVu Serif"],
+    "pdf.fonttype": 42,
+    "mathtext.fontset": "cm"})
 
         fig, ax = plt.subplots(figsize=(6.0531*2, 3.74110012361*2))
 

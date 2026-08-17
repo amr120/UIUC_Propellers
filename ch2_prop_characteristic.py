@@ -34,7 +34,12 @@ import os
 import numpy as np
 import matplotlib.pyplot as plt
 
-plt.rcParams.update({"font.family": "serif", "mathtext.fontset": "cm", "font.size": 13})
+plt.rcParams.update({"font.family": "serif",
+    # Name the face: bare "serif" resolves to DejaVu Serif, not the body font.
+    "font.serif": ["Nimbus Roman", "Nimbus Roman No9 L", "Times New Roman",
+                   "Liberation Serif", "DejaVu Serif"],
+    "pdf.fonttype": 42,
+    "mathtext.fontset": "cm", "font.size": 13})
 
 _HERE = os.path.dirname(os.path.abspath(__file__))
 _thesis_figs = os.path.join(_HERE, "..", "Reaves-Thesis", "2. Lit Review", "Figs")
