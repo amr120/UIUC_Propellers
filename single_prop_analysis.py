@@ -34,12 +34,16 @@ plt.rcParams.update({
     # Roman is the metrically identical face on the laptop.
     "font.serif": ["Nimbus Roman", "Nimbus Roman No9 L", "Times New Roman",
                    "Liberation Serif", "DejaVu Serif"],
-    "mathtext.fontset": "cm",
+    # STIX, not "cm". The thesis class takes the `times` option, which loads
+    # mathptmx: Times text AND Times-based maths. Computer Modern maths in a
+    # figure is a visibly different design (lighter, more slanted) sitting on
+    # a Times page. STIX is the Times-compatible maths font.
+    "mathtext.fontset": "stix",
     "pdf.fonttype": 42,
 })
 
 
-def point_axis(ax, xs, label="Test point", rotation=0, fontsize=11):
+def point_axis(ax, xs, label="Test point", fontsize=11, extra=()):
     """Number the test points on a secondary top axis.
 
     The point index belongs to the test condition, not to any one curve, so
@@ -47,15 +51,16 @@ def point_axis(ax, xs, label="Test point", rotation=0, fontsize=11):
     times over and collides wherever the curves converge. One tick per point
     along the top says the same thing once, and keeps the data area clear.
 
-    Pass rotation=90 where the points bunch up on the x variable, as they do
-    against eps near unity.
+    extra takes (x, text) pairs for points outside the swept sequence, such
+    as the static case, so they are named on the same line as the numbers.
     """
+    ticks = [x for x, _ in extra] + list(xs)
+    labels = [t for _, t in extra] + [str(i + 1) for i in range(len(xs))]
     top = ax.secondary_xaxis("top")
-    top.set_xticks(list(xs))
-    top.set_xticklabels([str(i + 1) for i in range(len(xs))],
-                        fontsize=fontsize, rotation=rotation)
+    top.set_xticks(ticks)
+    top.set_xticklabels(labels, fontsize=fontsize)
     top.set_xlabel(label, fontsize=13, labelpad=8)
-    top.tick_params(length=3, pad=2)
+    top.tick_params(length=3, pad=3)
     return top
 
 #import seaborn as sns
@@ -386,10 +391,8 @@ ax2.set_ylabel(r"[-]", fontsize=14)
 
 ax2.set_ylim(0, 1.05)
 ax2.tick_params(labelsize=14)
-# same test points as Figure 3.4, so the reader can trace a point between the
-# classical characteristic and this reformulation. Rotated: the points crowd
-# together as eps approaches unity.
-point_axis(ax2, Epsilon, rotation=90, fontsize=10)
+# the point axis for this figure is added at the end of the script, once the
+# static case has been read in, so that it can be named on the same line
 
 from matplotlib.lines import Line2D
 # Create two distinct legend columns: Theory (left) and Experiment (right)
@@ -785,9 +788,13 @@ if os.path.isdir(_thesis_figs):
 
 
 
-# Add the static operating point to the efficiency figure
+# Add the static operating point to the efficiency figure. It sits at
+# eps = 0 by definition (no freestream) and comes from a separate static
+# test file, so it carries no number in the swept-point sequence. It is
+# named on the point axis rather than in the plot body.
 ax2.scatter(eps_static[idx], FanEfficiency_static[idx], marker="s", s=60, zorder=10, color=faneta_color)
-#ax2.text(eps_static[idx], FanEfficiency_static[idx], 'static', fontsize=12, ha='left', va='bottom')
+point_axis(ax2, Epsilon, fontsize=9,
+           extra=[(float(eps_static[idx]), 'Static')])
 
 
 
