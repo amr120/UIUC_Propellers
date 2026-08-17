@@ -27,6 +27,37 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.optimize import fsolve
 
+plt.rcParams.update({
+    "font.family": "serif",
+    # Name the face: bare "serif" resolves to DejaVu Serif, not the thesis
+    # body font. Nimbus Roman is what the document sets (lab); Times New
+    # Roman is the metrically identical face on the laptop.
+    "font.serif": ["Nimbus Roman", "Nimbus Roman No9 L", "Times New Roman",
+                   "Liberation Serif", "DejaVu Serif"],
+    "mathtext.fontset": "cm",
+    "pdf.fonttype": 42,
+})
+
+
+def point_axis(ax, xs, label="Test point", rotation=0, fontsize=11):
+    """Number the test points on a secondary top axis.
+
+    The point index belongs to the test condition, not to any one curve, so
+    numbering every series in the plot body repeats each label three or four
+    times over and collides wherever the curves converge. One tick per point
+    along the top says the same thing once, and keeps the data area clear.
+
+    Pass rotation=90 where the points bunch up on the x variable, as they do
+    against eps near unity.
+    """
+    top = ax.secondary_xaxis("top")
+    top.set_xticks(list(xs))
+    top.set_xticklabels([str(i + 1) for i in range(len(xs))],
+                        fontsize=fontsize, rotation=rotation)
+    top.set_xlabel(label, fontsize=13, labelpad=8)
+    top.tick_params(length=3, pad=2)
+    return top
+
 #import seaborn as sns
 #sns.set_style("whitegrid")
 #sns.set_palette("colorblind")
@@ -76,15 +107,9 @@ ct_color = line_ct[0].get_color()
 cp_color = line_cp[0].get_color()
 eta_color = line_eta[0].get_color()
 
-for i in range(len(J)):
-    ax.text(J[i], eta[i], str(i+1), fontsize=14, ha='center', va='bottom')
-    ax.text(J[i], CT[i], str(i+1), fontsize=14, ha='center', va='bottom')
-    ax.text(J[i], CP[i], str(i+1), fontsize=14, ha='center', va='bottom')
-    
-
 ax.set_xlabel(r'Advance Ratio ($J = \frac{V_{\mathrm{fs}}}{n_s D}$)', fontsize=14)
 ax.set_ylabel(r'[-]', fontsize=14)
-ax.set_title(brand+f' Propeller  (Diameter: {diameter_in} in, RPM: {rpm})', fontsize=14, fontweight='bold')
+point_axis(ax, J)
 
 from matplotlib.lines import Line2D
 handles = [
@@ -246,11 +271,11 @@ contourf = ax4.contourf(J_mesh, Phi_mesh, np.minimum(Chirange, 3), levels=50, cm
 cbar = fig4.colorbar(contourf, ax=ax4, label=r'$\chi$', extend='max')
 cbar.set_ticks([0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0])
 ax4.plot(Jaero, Phitip, marker='x', color='red', linestyle='-', markersize=10, markeredgewidth=2)
-for i in range(len(Jaero)):
-    ax4.text(Jaero[i], Phitip[i], str(i+1), fontsize=10, ha='center', va='bottom')
 ax4.set_xlabel(r'$J_{\mathrm{aero}} = V_{\mathrm{fs}}/U_{\mathrm{tip}}$', fontsize=12)
 ax4.set_ylabel(r'$\Phi_{\mathrm{tip}} = V_1/U_{\mathrm{tip}}$', fontsize=12)
-ax4.set_title(brand+f' Propeller  (Diameter: {diameter_in} in, RPM: {rpm})', fontsize=12, fontweight='bold')
+# same test points again; on the contour field the in-plot numerals were
+# especially hard to read against the colour
+point_axis(ax4, Jaero)
 try:
     fig4.savefig("jaero_phitip_contour.pdf", bbox_inches="tight", dpi=300)
 except PermissionError:
@@ -354,17 +379,17 @@ ax2.scatter(Epsilon, CPOWER, marker="s", s=60, zorder=10, color=cp_color, )
 ax2.scatter(Epsilon, eta / FanEfficiency, marker="s", s=60, zorder=10, color=eta_color)
 
 
-for i in range(len(Epsilon)):
-    ax2.text(Epsilon[i], CTHRUST[i], str(i+1), fontsize=14, ha='center', va='bottom')
-    ax2.text(Epsilon[i], CPOWER[i], str(i+1), fontsize=14, ha='center', va='bottom')
-    ax2.text(Epsilon[i], ETAPROP[i], str(i+1), fontsize=14, ha='center', va='bottom')
-    ax2.text(Epsilon[i], FanEfficiency[i], str(i+1), fontsize=14, ha='center', va='bottom')
 ax2.set_xlabel(r'$ \varepsilon$ ($V_{\mathrm{fs}}/V_j$)', fontsize=14)
 ax2.set_ylabel(r"[-]", fontsize=14)
-ax2.set_title(brand+f' Propeller (Diameter: {diameter_in} in, RPM: {rpm})', fontsize=14, fontweight='bold')
+# no in-figure title: the caption already names the machine and its speed,
+# and the top of the axes now carries the test-point numbering
 
 ax2.set_ylim(0, 1.05)
 ax2.tick_params(labelsize=14)
+# same test points as Figure 3.4, so the reader can trace a point between the
+# classical characteristic and this reformulation. Rotated: the points crowd
+# together as eps approaches unity.
+point_axis(ax2, Epsilon, rotation=90, fontsize=10)
 
 from matplotlib.lines import Line2D
 # Create two distinct legend columns: Theory (left) and Experiment (right)
